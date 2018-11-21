@@ -4,6 +4,7 @@ import logo from './logo.svg';
 import './App.css';
 
 import { Header } from './components/Header';
+import Game from './modules/game';
 import { lightTheme, darkTheme } from './utils/theme';
 
 function App () {
@@ -14,6 +15,7 @@ function App () {
     <ThemeProvider theme={theme}>
       <div onClick={() => setTheme(darkTheme)}>
         <Header />
+        <Game />
       </div>
     </ThemeProvider>
   )
