@@ -1,5 +1,5 @@
 [
-    { "cellCount": 3, "memoryCount": 3, "fieldSize": 300, "space": 2 },
+    { "cellCount": 3, "memoryCount": 3, "fieldSize": 500, "space": 2 },
     { "cellCount": 4, "memoryCount": 3, "fieldSize": 300, "space": 3 },
     { "cellCount": 4, "memoryCount": 4, "fieldSize": 300, "space": 3 },
     { "cellCount": 5, "memoryCount": 4, "fieldSize": 300, "space": 3 },

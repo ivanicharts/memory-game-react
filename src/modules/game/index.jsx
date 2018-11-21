@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useMemo } from 'react';
 import styled from 'styled-components';
 import levels from '../../config/levels';
 
@@ -22,18 +22,43 @@ const GameFieldView = styled.div`
 `;
 
 function Game () {
-
     const [currentLevel, setLevel] = useState(0);
     const levelConfig = levels[currentLevel];
+    const { cellCount, memoryCount } = levelConfig;
+    const { field, hiddenCells } = useMemo(() => useGameField(cellCount, memoryCount), [cellCount, memoryCount]);
 
     return (
         <GameView>
             <GameFieldView {...levelConfig}>
                 the game...
-                <Field {...levelConfig} />
+                <Field 
+                    {...levelConfig}
+                    field={field}
+                    hiddenCells={hiddenCells}
+                />
             </GameFieldView>
         </GameView>
     );
+}
+
+function useGameField(cellCount, memoryCount) {
+    console.log('GAME FIELD CREATED');
+    
+    const cells = [...Array(cellCount * cellCount)].map((_, i) => i);
+    const field = [...cells].fill(1);
+    const hiddenCells = [];
+
+    for (let i = 0; i < memoryCount; i++) {
+        const rNum = Math.floor(Math.random() * cells.length);
+        const toChange = cells.splice(rNum, 1).pop();
+
+        hiddenCells.push(toChange);
+        field[toChange] = 2;
+    }
+
+    return {
+        field, hiddenCells,
+    };
 }
 
 export default memo(Game);
