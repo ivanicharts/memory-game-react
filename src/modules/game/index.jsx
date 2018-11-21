@@ -16,8 +16,8 @@ const GameView = styled.div`
 `;
 
 const GameFieldView = styled.div`
-    width: 300px;
-    height: 300px;
+    width: ${({ fieldSize, cellCount, space }) => fieldSize + cellCount * space}px;
+    height: ${({ fieldSize, cellCount, space }) => fieldSize + cellCount * space}px;
     margin: 20px 0;
 `;
 
@@ -28,7 +28,7 @@ function Game () {
 
     return (
         <GameView>
-            <GameFieldView>
+            <GameFieldView {...levelConfig}>
                 the game...
                 <Field {...levelConfig} />
             </GameFieldView>

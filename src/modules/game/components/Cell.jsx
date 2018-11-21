@@ -1,24 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 
-// import config from '../../config/game';
-
-
 import { getFromTheme } from '../../../utils';
-
-function calcCellSize(props) {
-    return '50px';
-}
 
 const CellView = styled.div`
     width: ${({ size }) => size}px;
     height: ${({ size }) => size}px;
     background: ${getFromTheme('cell.bg')};
+    margin: ${({ space }) => space}px;
 `;
 
-export function Cell({ size }) {
+export function Cell(props) {
 
     return (
-        <CellView size={size} />
+        <CellView {...props} />
     );
 }

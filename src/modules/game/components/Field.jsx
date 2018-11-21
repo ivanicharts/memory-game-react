@@ -22,7 +22,7 @@ const RowView = styled.div`
 `;
 
 function countCellSize(fieldSize, cellCount, space) {
-    return Math.round(fieldSize / cellCount - space);
+    return (fieldSize / cellCount - space);
 }
 
 export function Field({ fieldSize = 0, cellCount = 0, space = 0 }) {
@@ -36,7 +36,7 @@ export function Field({ fieldSize = 0, cellCount = 0, space = 0 }) {
             {
                 [...Array(cellCount)].map(() => (
                     [...Array(cellCount)].map(() => (
-                        <Cell size={cellSize} />
+                        <Cell size={cellSize} space={space} />
                     ))
                 ))
             }
