@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import styled from 'styled-components';
-import { Spring } from 'react-spring';
+import { Spring, config } from 'react-spring';
 
 import { getFromTheme } from '../../../utils';
 
@@ -11,30 +11,57 @@ const CellView = styled.div`
     margin: ${({ space }) => space}px;
     display: flex;
     justify-content: center;
+    align-items: center;
 `;
 
-const ActiveCell = styled.div`
-    width: ${({ width }) => width}%;
+// const ActiveCell = styled.div`
+//     width: ${({ width }) => width}%;
+//     height: 100%;
+//     background: ${getFromTheme('cell.activeBg')};
+// `;
+
+const ActiveCell = styled.div.attrs(({ width }) => ({
+    style: {
+        width: `${width}%`,
+    }
+}))`
     height: 100%;
     background: ${getFromTheme('cell.activeBg')};
+    transition: width .2s ease;
+`;
+
+const FailedCell = styled.div.attrs(({ size }) => ({
+    style: {
+        width: `${size}%`,
+        height: `${size}%`,
+    }
+}))`
+    background: ${getFromTheme('cell.failedBg')};
+    transition: width .2s ease, height .2s ease;
 `;
 
 export const Cell = memo(function Cell(props) {
-    const { id, value } = props;
-    // const [isActive, setActive] = useState(false);
+    const { id, value, forceShow } = props;
 
-    // oncClick={() => setActive(!isActive)}
-
-    const isActive = value === 3;
+    const isActive = (forceShow && value === 2) || value === 3;
+    const isFailed = !value;
     
+    // return (
+    //     <CellView {...props}>
+    //         {/* <ActiveCell /> */}
+    //         <Spring
+    //             config={config.stiff}
+    //             from={{ width: 0 }} to={{ width: isActive ? 100 : 0 }}
+    //         >
+    //             {({ width }) => (<ActiveCell id={id} width={width} />)}
+    //         </Spring>
+    //     </CellView>
+    // );
+        
     return (
         <CellView {...props}>
-            {/* <ActiveCell /> */}
-            <Spring
-                from={{ width: 0 }} to={{ width: isActive ? 100 : 0 }}
-            >
-                {({ width }) => (<ActiveCell id={id} width={width} />)}
-            </Spring>
+            <ActiveCell id={id} width={isActive ? 100 : 0} />
+            <FailedCell id={id} size={isFailed ? 100 : 0}/>
         </CellView>
     );
 });

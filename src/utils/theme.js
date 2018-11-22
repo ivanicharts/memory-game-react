@@ -6,7 +6,11 @@ export const lightTheme = {
     cell: {
         bg: '#BDC2E5',
         ratio: 1,
-        activeBg: '#5FB366',
+        activeBg: '#2ecc71',
+        failedBg: '#e74c3c',
+    },
+    loader: {
+        bg: '#627CA2',
     }
 }
 

@@ -3,9 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "loaders.css": "^0.1.2",
+    "node-sass": "^4.10.0",
     "ramda": "^0.26.0",
     "react": "^16.7.0-alpha.0",
     "react-dom": "^16.7.0-alpha.0",
+    "react-loaders": "^3.0.1",
     "react-scripts": "2.1.1",
     "react-spring": "^6.1.8",
     "styled-components": "^4.1.1"

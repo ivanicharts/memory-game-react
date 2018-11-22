@@ -1,3 +1,12 @@
+@import '~loaders.css/src/animations/line-scale.scss';
+
+.loader-hidden {
+  display: none;
+}
+.loader-active {
+  display: block;
+}
+
 .App {
   text-align: center;
 }

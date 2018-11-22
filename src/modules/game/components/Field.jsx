@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 import config from '../../../config/game';
@@ -14,6 +14,10 @@ const FieldView = styled.div`
     flex-wrap: wrap;
     justify-content: space-between;
     margin: 20px 0;
+
+    opacity: ${({ opacity }) => opacity};
+    transform: scale(${({ opacity }) => opacity});
+    transition: opacity .2s ease, transform .3s ease;
 `;
 
 
@@ -24,31 +28,37 @@ export const Field = memo(function Field ({
     memoryCount = 0,
     field = [],
     hiddenCells = [],
+    level = 0,
+    showHidden = false,
+    dispatch,
+    checkLevel,
+    visible,
 }) {
-    // const [gameField] =  
     const cellSize = countCellSize(fieldSize, cellCount, space);
-    const { gameField, onCellClick } = useGameField(field, hiddenCells, () => (1))
-    console.log('game field', gameField);
+    const { gameField, onCellClick } = useGameField(field, hiddenCells, checkLevel);
+   
+    useEffect(
+        () => {
+            dispatch({ type: 'hidden/show' })
+            setTimeout(() => dispatch({ type: 'hidden/hide' }), 4000);
+        },
+        [level]
+    );
+
+
+    console.log('game field', level, field, gameField);
     
     return (
-        <FieldView onClick={onCellClick}>
+        <FieldView
+            opacity={!visible ? 1 : 0}
+            onClick={!showHidden ? onCellClick : null}>
             {
                 gameField.map((cellValue, i) => (
-                    <Cell size={cellSize} space={space} key={i} id={i} value={cellValue} />
+                    <Cell size={cellSize} space={space} key={i} id={i} value={cellValue} forceShow={showHidden} />
                 ))
             }
         </FieldView>
     );
-
-    // return (
-    //     <FieldView onClick={onCellClick}>
-    //         {
-    //             [...Array(cellCount * cellCount)].map((_, i) => (
-    //                 <Cell size={cellSize} space={space} key={i} id={i} />
-    //             ))
-    //         }
-    //     </FieldView>
-    // );
 });
 
 function useGameField(field, hiddenCells, checkLevel) {
@@ -61,14 +71,21 @@ function useGameField(field, hiddenCells, checkLevel) {
         const { id } = e.target;
 
         if (hiddenCells.includes(Number(id))) {
-            console.log('qqq');
-            
-            const updatedField = gameField.map((e, i) => i == id ? 3 : e);
+            const updatedField = gameField.map((e, i) => i === +id ? 3 : e);
+            const updatedHidden = gameHiddenCells.filter(e => e !== Number(id));
+
             setField(updatedField);
-            const updatedHidden = gameHiddenCells.filter(e => e !== id);
             setHidden(updatedHidden);
-            return checkLevel(!!updatedHidden.length);
+
+            console.log('up', updatedHidden, gameHiddenCells, id);
+            
+
+            return !updatedHidden.length && setTimeout(checkLevel, 1000, true);
         }
+
+        const updatedField = gameField.map((e, i) => i === +id ? 0 : e);
+        setField(updatedField);
+
         return checkLevel(false);
     }
 

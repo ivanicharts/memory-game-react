@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ThemeProvider } from 'styled-components';
-import './App.css';
+import './App.scss';
 
 import { Header } from './components/Header';
 import Game from './modules/game';
