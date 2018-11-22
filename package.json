@@ -6,6 +6,7 @@
     "loaders.css": "^0.1.2",
     "node-sass": "^4.10.0",
     "ramda": "^0.26.0",
+    "rc-switch": "^1.8.0",
     "react": "^16.7.0-alpha.0",
     "react-dom": "^16.7.0-alpha.0",
     "react-loaders": "^3.0.1",

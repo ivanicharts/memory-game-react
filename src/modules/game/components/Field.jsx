@@ -1,11 +1,7 @@
 import React, { memo, useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-import config from '../../../config/game';
 import { Cell } from './Cell';
-
-
-import { getFromTheme } from '../../../utils';
 
 const FieldView = styled.div`
     width: 100%;
@@ -15,8 +11,8 @@ const FieldView = styled.div`
     justify-content: space-between;
     margin: 20px 0;
 
-    opacity: ${({ opacity }) => opacity};
-    transform: scale(${({ opacity }) => opacity});
+    opacity: ${({ animationState }) => animationState};
+    transform: scale(${({ animationState }) => animationState});
     transition: opacity .2s ease, transform .3s ease;
 `;
 
@@ -25,32 +21,28 @@ export const Field = memo(function Field ({
     fieldSize = 0,
     cellCount = 0,
     space = 0,
-    memoryCount = 0,
     field = [],
     hiddenCells = [],
     level = 0,
     showHidden = false,
     dispatch,
-    checkLevel,
+    updateLevel,
     visible,
 }) {
     const cellSize = countCellSize(fieldSize, cellCount, space);
-    const { gameField, onCellClick } = useGameField(field, hiddenCells, checkLevel);
+    const { gameField, onCellClick } = useGameField(field, hiddenCells, updateLevel);
    
     useEffect(
         () => {
             dispatch({ type: 'hidden/show' })
-            setTimeout(() => dispatch({ type: 'hidden/hide' }), 4000);
+            setTimeout(() => dispatch({ type: 'hidden/hide' }), 1500);
         },
         [level]
     );
 
-
-    console.log('game field', level, field, gameField);
-    
     return (
         <FieldView
-            opacity={!visible ? 1 : 0}
+            animationState={!visible ? 1 : 0}
             onClick={!showHidden ? onCellClick : null}>
             {
                 gameField.map((cellValue, i) => (
@@ -61,59 +53,34 @@ export const Field = memo(function Field ({
     );
 });
 
-function useGameField(field, hiddenCells, checkLevel) {
+function useGameField(field, hiddenCells, updateLevel) {
+    console.log('::USE GAME FIELD::');
+    
     const [gameField, setField] = useState(field);
     const [gameHiddenCells, setHidden] = useState(hiddenCells);
 
-    function onCellClick(e) {
-        console.log('on cell click', e.target.id, hiddenCells, hiddenCells.includes(Number(e.target.id)));
-        
-        const { id } = e.target;
+    function onCellClick({ target }) {
+        const id = Number(target.id);
 
-        if (hiddenCells.includes(Number(id))) {
-            const updatedField = gameField.map((e, i) => i === +id ? 3 : e);
-            const updatedHidden = gameHiddenCells.filter(e => e !== Number(id));
+        if (hiddenCells.includes(id)) {
+            const updatedField = gameField.map((e, i) => i === id ? 3 : e);
+            const updatedHidden = gameHiddenCells.filter(e => e !== id);
 
             setField(updatedField);
             setHidden(updatedHidden);
 
-            console.log('up', updatedHidden, gameHiddenCells, id);
-            
-
-            return !updatedHidden.length && setTimeout(checkLevel, 1000, true);
+            return !updatedHidden.length && setTimeout(updateLevel, 1000, true);
         }
 
-        const updatedField = gameField.map((e, i) => i === +id ? 0 : e);
+        const updatedField = gameField.map((e, i) => i === id ? 0 : e);
         setField(updatedField);
 
-        return checkLevel(false);
+        return setTimeout(updateLevel, 1000, false);
     }
 
     return { gameField, onCellClick };
 }
 
-// function useGameField(cellCount, memoryCount) {
-//     const cells = [...Array(cellCount * cellCount)].map((_, i) => i);
-//     const field = [...cells].fill(1);
-//     const highlightOrder = [];
-
-//     for (let i = 0; i < memoryCount; i++) {
-//         const rNum = Math.floor(Math.random() * cells.length);
-//         const toChange = cells.splice(rNum, 1);
-
-//         highlightOrder.push(toChange);
-//         field[toChange] = 2;
-//     }
-
-//     return {
-//         field, highlightOrder,
-//     };
-// }
-
 function countCellSize(fieldSize, cellCount, space) {
     return (fieldSize / cellCount - space);
-}
-
-function onCellClick (e) {
-    console.log(e, e.target, e.target.id);
 }

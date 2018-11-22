@@ -3,9 +3,12 @@ export const lightTheme = {
         height: '50px',
         background: '#627CA2',
     },
+    body: {
+        bg: '#fff',
+        color: '#000',
+    },
     cell: {
         bg: '#BDC2E5',
-        ratio: 1,
         activeBg: '#2ecc71',
         failedBg: '#e74c3c',
     },
@@ -17,6 +20,18 @@ export const lightTheme = {
 export const darkTheme = {
     header: {
         height: '50px',
-        background: 'green',
+        background: '#627CA2',
+    },
+    body: {
+        bg: '#1A1159',
+        color: '#fff',
+    },
+    cell: {
+        bg: '#3b2d77',
+        activeBg: '#95C8B9',
+        failedBg: '#DD4A63',
+    },
+    loader: {
+        bg: '#627CA2',
     }
 }

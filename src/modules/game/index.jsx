@@ -1,18 +1,13 @@
-import React, { memo, useReducer, useMemo, useState, useEffect } from 'react';
-import styled from 'styled-components';
-import Loader from 'react-loaders';
+import React, { memo, useReducer, useMemo, useEffect } from 'react';
+import styled, { createGlobalStyle } from 'styled-components';
 
 import levels from '../../config/levels';
-import { Cell } from './components/Cell';
 import { Field } from './components/Field';
+import { GameReducer, initialState, NEW_LEVEL, LOADER_HIDE, LOADER_SHOW } from './game.reducer';
 import { getFromTheme } from '../../utils';
-import { GameReducer, initialState, NEW_LEVEL } from './game.reducer';
+import Switch from 'rc-switch';
 
-const GameSpin = styled(Loader)`
-    div > div {
-        background-color: ${getFromTheme('loader.bg')};
-    }
-`;
+import 'rc-switch/assets/index.css';
 
 const GameView = styled.div`
     width: 100%;
@@ -20,7 +15,7 @@ const GameView = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 50px 0;
+    margin: 80px 0;
 `;
 
 const GameFieldView = styled.div`
@@ -29,60 +24,56 @@ const GameFieldView = styled.div`
     margin: 20px 0;
 `;
 
-const SpinGroup = styled.div`
-    width: 100%;
-    height: 100%;
+const SwitchView = styled.div`
     display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 100%;
+    justify-content: space-between;
 `;
 
-function Game () {
-    const [{ level, showHidden }, dispatch] = useReducer(GameReducer, initialState);
-    const [showLoader, setShowLoader] = useState(true);
+function Game ({ toggleTheme }) {
+    const [{ level, showHidden, showLoader }, dispatch] = useReducer(GameReducer, initialState);
     const levelConfig = levels[level];
     const { cellCount, memoryCount } = levelConfig;
-    
     const { field, hiddenCells } = useMemo(() => useGameField(cellCount, memoryCount), [cellCount, memoryCount]);
 
     useEffect(
-        () => {
-            console.log('EFFECT::SHOW_HIDE_SPINNER');
-            
-            setShowLoader(true);
-            setTimeout(setShowLoader, 2000, false);
-        },
+        () => setTimeout(dispatch, 500, { type: LOADER_HIDE }),
         [level],
     );
 
-    function checkLevel(param) {
-        if (param) {
-            dispatch({ type: NEW_LEVEL, level: level + 1 });
-        } else {
-            dispatch({ type: NEW_LEVEL, level: 0 });
-        }
-        // return dispatch({ type: param ?  })
+    function updateLevel(param) {
+        dispatch({ type: LOADER_SHOW });
+        setTimeout(() => dispatch({ type: NEW_LEVEL, level: param ? level + 1 : 0 }), 500);
     }
+
+    const GlobalStyle = createGlobalStyle`
+        body {
+            background: ${getFromTheme('body.bg')};
+            color: ${getFromTheme('body.color')};
+        }
+    `;
 
     return (
         <GameView>
+            <GlobalStyle />
             <GameFieldView {...levelConfig}>
-            the game... {level}
-                {
-                    // showLoader
-                    // ? (<SpinGroup><GameSpin type='line-scale' /></SpinGroup>)
-                     (<Field
-                        visible={showLoader}
-                        {...levelConfig}
-                        key={level}
-                        level={level}
-                        field={field}
-                        hiddenCells={hiddenCells}
-                        dispatch={dispatch}
-                        showHidden={showHidden}
-                        checkLevel={checkLevel}
-                    />)
-                }
+                <SwitchView>
+                    <div>Level: {level}</div>
+                    <div>
+                        Theme mode: <Switch onClick={toggleTheme} />
+                    </div>
+                </SwitchView>
+                <Field
+                    {...levelConfig}
+                    visible={showLoader}
+                    key={level}
+                    level={level}
+                    field={field}
+                    hiddenCells={hiddenCells}
+                    dispatch={dispatch}
+                    showHidden={showHidden}
+                    updateLevel={updateLevel}
+                />
             </GameFieldView>
         </GameView>
     );

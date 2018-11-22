@@ -1,6 +1,5 @@
 import React, { memo } from 'react';
 import styled from 'styled-components';
-import { Spring, config } from 'react-spring';
 
 import { getFromTheme } from '../../../utils';
 
@@ -13,12 +12,6 @@ const CellView = styled.div`
     justify-content: center;
     align-items: center;
 `;
-
-// const ActiveCell = styled.div`
-//     width: ${({ width }) => width}%;
-//     height: 100%;
-//     background: ${getFromTheme('cell.activeBg')};
-// `;
 
 const ActiveCell = styled.div.attrs(({ width }) => ({
     style: {
@@ -41,22 +34,12 @@ const FailedCell = styled.div.attrs(({ size }) => ({
 `;
 
 export const Cell = memo(function Cell(props) {
+    console.log('CELLL::::');
+    
     const { id, value, forceShow } = props;
 
     const isActive = (forceShow && value === 2) || value === 3;
     const isFailed = !value;
-    
-    // return (
-    //     <CellView {...props}>
-    //         {/* <ActiveCell /> */}
-    //         <Spring
-    //             config={config.stiff}
-    //             from={{ width: 0 }} to={{ width: isActive ? 100 : 0 }}
-    //         >
-    //             {({ width }) => (<ActiveCell id={id} width={width} />)}
-    //         </Spring>
-    //     </CellView>
-    // );
         
     return (
         <CellView {...props}>
