@@ -1,0 +1,60 @@
+In this tutorial using React we will try to implement simple memory game with themes support and some simple animation.
+We will try and discuss Create React App 2, React Hooks and styled-components.
+
+// THE DEMO LINK
+
+# Init the App
+
+Let's start creating new CRA project:
+
+// create-react-app memory-game
+
+# Install dependencies
+
+After project creating we can install necessary dependencies:
+
+// cd memory-game
+// npm i --save react@16.7.0-alpha.0 react-dom@16.7.0-alpha.0 styled-components ramda
+
+# File structure
+
+I've removed some unnecessary files for this tutorials and have created some new files.
+My structure for this moment looks like this:
+
+// screen-2
+
+# App.js
+
+```
+https://gist.github.com/ivanicharts/e0861c17c96f76e806b7138123a9c3f1
+
+```
+
+# index.js
+
+```
+https://gist.github.com/ivanicharts/7b25cfe8c63a10ce221a01c75732c1f4
+```
+
+# index.css
+
+```
+https://gist.github.com/ivanicharts/0e95a718fe151f324d0a4f84e3fb6e84
+```
+
+Other files are empty. We will fill them below.
+
+# Config
+
+So we have `levels.json` and `themes.json` files for level and theme configurations:
+
+```
+https://gist.github.com/ivanicharts/13314b66c0aadac6cff727e35e06ecda
+```
+
+Here I have 4 level params:
+
+cellCount - the number of cells in a row, for example if 4, then game field size will be 4 x 4
+memoryCount - the number of cells that the user will have to remember
+fieldSize - size of game field in pixels
+space - space between cells
