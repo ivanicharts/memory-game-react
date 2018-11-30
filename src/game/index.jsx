@@ -1,11 +1,11 @@
 import React, { memo, useReducer, useMemo, useEffect } from 'react';
 
-import levels from '../config/levels';
+// import levels from '../config/levels';
 import { Field } from './components/GameField';
 import { GameFieldView, GameView, SwitchView } from './components/Styled';
 import {
     GameReducer, initialState, NEW_LEVEL,
-    FIELD_HIDE, FIELD_SHOW,
+    FIELD_HIDE, FIELD_SHOW, RESET_LEVEL,
 } from './game.reducer';
 import { generateGameField } from './game.utils';
 import Switch from 'rc-switch';
@@ -13,17 +13,20 @@ import Switch from 'rc-switch';
 import 'rc-switch/assets/index.css';
 
 function Game ({ toggleTheme }) {
-    const [{ level, showHidden, showField }, dispatch] = useReducer(
+    const [{ level, showHidden, showField, levelConfig }, dispatch] = useReducer(
         GameReducer, initialState
     );
 
-    const levelConfig = levels[level];
+    // const levelConfig = levels[level];
     const { cellCount, memoryCount } = levelConfig;
 
     const { field, hiddenCells } = useMemo(
         () => generateGameField(cellCount, memoryCount),
         [levelConfig]
     );
+
+    console.log('field', field);
+    
 
     useEffect(
         () => setTimeout(dispatch, 500, { type: FIELD_SHOW }),
@@ -32,7 +35,7 @@ function Game ({ toggleTheme }) {
 
     function updateLevel(shouldReset) {
         dispatch({ type: FIELD_HIDE });
-        setTimeout(dispatch, 500, { type: NEW_LEVEL, level: shouldReset ? 0 : level + 1 });
+        setTimeout(dispatch, 500, { type: shouldReset ? RESET_LEVEL : NEW_LEVEL, level: level + 1 });
     }
 
     return (
@@ -46,8 +49,9 @@ function Game ({ toggleTheme }) {
                 </SwitchView>
                 <Field
                     {...levelConfig}
+                    levelConfig={levelConfig}
                     visible={showField}
-                    key={level}
+                    key={field}
                     level={level}
                     field={field}
                     hiddenCells={hiddenCells}

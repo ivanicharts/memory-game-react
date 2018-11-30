@@ -37,7 +37,7 @@ export const Cell = memo(function Cell(props) {
     const isFailed = !value;
         
     return (
-        <CellView {...props}>
+        <CellView className='no-select' {...props}>
             <ActiveCellView id={id} width={isActive ? 100 : 0} />
             <FailedCellView id={id} size={isFailed ? 100 : 0}/>
         </CellView>
