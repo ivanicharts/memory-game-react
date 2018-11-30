@@ -1,0 +1,14 @@
+[
+    { "cellCount": 3, "memoryCount": 3, "fieldSize": 300, "space": 1 },
+    { "cellCount": 4, "memoryCount": 3, "fieldSize": 300, "space": 1 },
+    { "cellCount": 4, "memoryCount": 4, "fieldSize": 300, "space": 1 },
+    { "cellCount": 5, "memoryCount": 4, "fieldSize": 300, "space": 1 },
+    { "cellCount": 5, "memoryCount": 5, "fieldSize": 350, "space": 1 },
+    { "cellCount": 5, "memoryCount": 6, "fieldSize": 350, "space": 1 },
+    { "cellCount": 5, "memoryCount": 6, "fieldSize": 350, "space": 1 },
+    { "cellCount": 5, "memoryCount": 7, "fieldSize": 350, "space": 1 },
+    { "cellCount": 6, "memoryCount": 7, "fieldSize": 350, "space": 1 },
+    { "cellCount": 6, "memoryCount": 8, "fieldSize": 350, "space": 1 },
+    { "cellCount": 6, "memoryCount": 9, "fieldSize": 350, "space": 1 },
+    { "cellCount": 6, "memoryCount": 10, "fieldSize": 350, "space": 1 }
+]
