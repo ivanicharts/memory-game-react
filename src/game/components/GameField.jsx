@@ -30,6 +30,7 @@ export const Field = memo(function Field ({
     dispatch,
     updateLevel,
     visible,
+    levelConfig,
 }) {
     const cellSize = fieldSize / cellCount - space;
 
@@ -40,7 +41,7 @@ export const Field = memo(function Field ({
             dispatch({ type: HIDDEN_CELL_SHOW })
             setTimeout(() => dispatch({ type: HIDDEN_CELL_HIDE }), 1500);
         },
-        [level]
+        [levelConfig]
     );
 
     return (
